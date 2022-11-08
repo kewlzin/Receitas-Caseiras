@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1085723822312",
+    "project_id": "receitas-caseiras-73457",
+    "storage_bucket": "receitas-caseiras-73457.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085723822312:android:0721a5f8b8cac31601e15d",
+        "android_client_info": {
+          "package_name": "com.example.projeto_flutter_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085723822312-ik0ti1c2khnkcoum33vffkn995c0l8nm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4e-w27HSyWQ4Y266qgZtTJjWqyhwdolQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085723822312-ik0ti1c2khnkcoum33vffkn995c0l8nm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1085723822312-33taqs3154qp137tak5qotmfq400dhh4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.projetoFlutterMobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
