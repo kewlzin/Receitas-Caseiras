@@ -1,11 +1,13 @@
 // ignore: file_names
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:projeto_flutter_mobile/services/auth_services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projeto_flutter_mobile/services/auth_services.dart';
 import 'package:provider/provider.dart';
+import 'package:projeto_flutter_mobile/views/loginPage.dart';
 
 // ignore: camel_case_types
 class minhaConta extends StatefulWidget {
@@ -21,6 +23,7 @@ class _minhaContaState extends State<minhaConta> {
   final double profileHeight = 144;
   List<Reference> refs = [];
   List<String> arquivos = [];
+  String profilePicUrl = "";
   bool loading = true;
   bool uploading = false;
   double total = 0;
@@ -37,7 +40,9 @@ class _minhaContaState extends State<minhaConta> {
   Future<UploadTask> upload(String path) async {
     File file = File(path);
     try {
-      String ref = 'images/img-${DateTime.now().toString()}.jpeg';
+      String ref =
+          'images/img-${FirebaseAuth.instance.currentUser!.email}.jpeg';
+      // String ref = 'images/img-${DateTime.now().toString()}.jpeg';
       final storageRef = FirebaseStorage.instance.ref();
       return storageRef.child(ref).putFile(
             file,
@@ -76,6 +81,14 @@ class _minhaContaState extends State<minhaConta> {
 
           arquivos.add(await photoRef.getDownloadURL());
           refs.add(photoRef);
+          photoRef.getDownloadURL().then(
+            (value) {
+              print(value);
+              setState(() {
+                profilePicUrl = value;
+              });
+            },
+          );
           // final SharedPreferences prefs = await _prefs;
           // prefs.setStringList('images', arquivos);
 
@@ -85,6 +98,21 @@ class _minhaContaState extends State<minhaConta> {
     }
   }
 
+  loadImages() async {
+    // final SharedPreferences prefs = await _prefs;
+    // arquivos = prefs.getStringList('images') ?? [];
+
+    // if (arquivos.isEmpty) {
+    refs = (await storage.ref('images').listAll()).items;
+    for (var ref in refs) {
+      final arquivo = await ref.getDownloadURL();
+      arquivos.add(arquivo);
+    }
+    // prefs.setStringList('images', arquivos);
+    // }
+    setState(() => loading = false);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         body: ListView(
@@ -92,8 +120,6 @@ class _minhaContaState extends State<minhaConta> {
       children: <Widget>[
         buildTop(context),
         buildContent(),
-        FloatingActionButton(
-            onPressed: () => context.read<AuthService>().logout())
       ],
     ));
   }
@@ -101,15 +127,19 @@ class _minhaContaState extends State<minhaConta> {
   Widget buildContent() => Column(
         children: [
           const SizedBox(height: 8),
-          const Text('Usuário',
+          Text(FirebaseAuth.instance.currentUser!.email.toString(),
               style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Color.fromARGB(255, 34, 34, 34))),
           const SizedBox(height: 8),
-          const Text('seuemail@email.com',
-              style: TextStyle(
-                  fontSize: 20, color: Color.fromARGB(255, 34, 34, 34))),
+          new IconButton(
+            icon: new Icon(Icons.logout),
+            color: Colors.black,
+            onPressed: () {
+              context.read<AuthService>().logout();
+            },
+          ),
           const SizedBox(
             height: 10,
           ),
@@ -142,13 +172,64 @@ class _minhaContaState extends State<minhaConta> {
         ]);
   }
 
-  Widget buildProfileImage() => CircleAvatar(
-      radius: profileHeight / 2,
-      backgroundColor: Colors.grey.shade800,
-      backgroundImage: AssetImage("images/usericon.jpg"));
+  Widget buildProfileImage() => SizedBox(
+        height: 144,
+        width: 144,
+        child: Stack(
+          clipBehavior: Clip.none,
+          fit: StackFit.expand,
+          children: [
+            profilePicUrl == ""
+                ? CircleAvatar(
+                    backgroundImage: AssetImage("images/usericon.jpg"),
+                  )
+                : CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      profilePicUrl,
+                    ),
+                  ),
+            Positioned(
+              bottom: 0,
+              right: -25,
+              child: RawMaterialButton(
+                onPressed: pickAndUploadImage,
+                elevation: 2.0,
+                fillColor: Colors.white,
+                child: Icon(
+                  uploading ? Icons.lock_clock : Icons.camera_alt_outlined,
+                  color: Colors.orange,
+                ),
+                padding: EdgeInsets.all(10),
+                shape: CircleBorder(),
+              ),
+            )
+          ],
+        ),
+      );
+
+//  Widget buildProfileImage() => CircleAvatar(
+//        radius: profileHeight / 2,
+//        backgroundColor: Colors.grey.shade800,
+//        backgroundImage: AssetImage("images/usericon.jpg"),
+//        child: InkWell(
+//          onTap: () {},
+//          splashColor: Colors.white,
+//          child: Ink.image(
+//            fit: BoxFit.cover,
+//            width: 15,
+//            height: 15,
+//            image: AssetImage('images/change_profile_picture.png'),
+//          ),
+//        ),
+//      );
 
   Widget buildCoverImage() => Container(
-      color: Colors.grey,
-      child: Image.asset('images/fundo.jpg',
-          width: double.infinity, height: coverHeight, fit: BoxFit.cover));
+        color: Colors.grey,
+        child: Image.asset(
+          'images/fundo.jpg',
+          width: double.infinity,
+          height: coverHeight,
+          fit: BoxFit.cover,
+        ),
+      );
 }

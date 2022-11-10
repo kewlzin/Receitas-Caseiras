@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:projeto_flutter_mobile/configs/hive_config.dart';
 import 'package:projeto_flutter_mobile/repositories/favoritas_repository.dart';
 import 'package:projeto_flutter_mobile/services/auth_services.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await HiveConfig.start();
 
   // runApp(ChangeNotifierProvider(
   //     create: (context) => FavoritasRepository(), child: MyApp()));

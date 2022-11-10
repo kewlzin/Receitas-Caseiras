@@ -30,7 +30,7 @@ class _ReceitasFavoritasState extends State<ReceitasFavoritas> {
         height: MediaQuery.of(context).size.height,
         margin: EdgeInsets.only(top: 30),
         child: Consumer<FavoritasRepository>(
-          builder: (context, FavoritasRepository, child) {
+          builder: (context, favoritas, child) {
             return favoritas.lista.isEmpty
                 ? const ListTile(
                     leading: Icon(Icons.heart_broken),

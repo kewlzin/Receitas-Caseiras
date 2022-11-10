@@ -15,20 +15,20 @@ class inicio extends StatefulWidget {
 }
 
 class _inicioState extends State<inicio> {
-  mostrarDetalhes(Receita receita) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ReceitasDetalhesPage(receita: receita),
-      ),
-    );
-  }
+  // mostrarDetalhes(Receita receita) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (_) => ReceitasDetalhesPage(receita: receita),
+  //     ),
+  //   );
 
 //  late FavoritasRepository favoritas;
   @override
   Widget build(BuildContext context) {
     final tabela = ReceitaRepository.tabela;
     //   favoritas = context.watch<FavoritasRepository>();
+
     return Container(
         color: Colors.transparent,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
@@ -74,8 +74,15 @@ class _inicioState extends State<inicio> {
                     return Container(
                         child: InkWell(
                       splashColor: Colors.grey,
-                      // onTap: () => print(tabela[receita].nome + "foi pressionado"),
-                      onTap: () => mostrarDetalhes(tabela[receita]),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                ReceitasDetalhesPage(receita: tabela[receita]),
+                          ),
+                        );
+                      },
                       child: Container(
                           margin: const EdgeInsets.only(
                             bottom: 30,

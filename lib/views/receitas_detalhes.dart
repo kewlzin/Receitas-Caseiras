@@ -1,7 +1,7 @@
-import 'dart:ffi';
 import 'dart:ui';
 import 'package:projeto_flutter_mobile/repositories/favoritas_repository.dart';
 import 'package:projeto_flutter_mobile/repositories/receitas_repository.dart';
+import 'package:projeto_flutter_mobile/views/receitasFavoritas.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_flutter_mobile/models/receitas.dart';
@@ -30,31 +30,35 @@ class _ReceitasDetalhesPageState extends State<ReceitasDetalhesPage> {
   Widget build(BuildContext context) {
     favoritas = context.watch<FavoritasRepository>();
     //
-    bool bol1 = false;
-    (favoritas.lista.contains(widget.receita)) ? bol1 = true : bol1 = false;
+    bool favoritada = false;
+    if (favoritas.box.containsKey(widget.receita.nome)) {
+      //if (favoritas.lista.contains(widget.receita)) {
+      favoritada = true;
+    } else {
+      favoritada = false;
+    }
+    ;
     return Scaffold(
         floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
+            onPressed: () async {
               (selecionadas.contains(widget.receita))
                   ? selecionadas.remove(widget.receita)
                   : selecionadas.add(widget.receita);
-              if (favoritas.lista.contains(widget.receita)) {
-                bol1 = false;
-                favoritas.remove(widget.receita);
-              } else {
-                bol1 = true;
+              if (!favoritada) {
                 favoritas.saveAll(selecionadas);
+                favoritada = true;
+              } else {
+                favoritada = false;
+                favoritas.remove(widget.receita);
               }
-              //   (favoritas.lista.contains(widget.receita))
-              //       ? favoritas.remove(widget.receita)
-              //       : favoritas.saveAll(selecionadas);
+
               limparSelecionadas();
               print(selecionadas.length);
               print(favoritas.lista.length);
             },
-            label: const Text('Favoritar'),
+            label: favoritada ? Text('Desfavoritar') : Text('Favoritar'),
             icon: const Icon(Icons.favorite),
-            backgroundColor: bol1 ? Colors.grey : Colors.red),
+            backgroundColor: favoritada ? Colors.grey : Colors.red),
         backgroundColor: Colors.white,
         appBar: AppBar(
           shape: RoundedRectangleBorder(
@@ -97,12 +101,6 @@ class _ReceitasDetalhesPageState extends State<ReceitasDetalhesPage> {
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(255, 34, 34, 34))),
-        if (favoritas.lista.contains(widget.receita))
-          Icon(
-            Icons.favorite,
-            size: 34,
-            color: Colors.red,
-          ),
         const SizedBox(height: 15),
         new Row(children: <Widget>[
           Flexible(
