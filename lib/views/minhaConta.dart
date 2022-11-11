@@ -1,5 +1,6 @@
 // ignore: file_names
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projeto_flutter_mobile/services/auth_services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -27,9 +28,36 @@ class _minhaContaState extends State<minhaConta> {
   bool loading = true;
   bool uploading = false;
   double total = 0;
+  bool control = true;
 //TODO Fazer botão de login/cadastro
   @override
   final FirebaseStorage storage = FirebaseStorage.instance;
+
+  // void checkexist() async {
+  //   if (control) {
+  //     try {
+  //       String downloadProfile = await storage
+  //           .ref('images/img-${FirebaseAuth.instance.currentUser!.email}.jpeg')
+  //           .getDownloadURL();
+  //       print('certo');
+  //       profilePicUrl = downloadProfile;
+  //     } on FirebaseException catch (e) {
+  //       if (e.code == 'object-not-found') {
+  //         print('nãocerto');
+  //         profilePicUrl = "";
+  //       } else {
+  //         print("${e.code}");
+  //         profilePicUrl = "";
+  //       }
+  //     }
+  //     control = true;
+  //   }
+  // }
+
+  void initState() {
+    super.initState();
+    loadImages();
+  }
 
   Future<XFile?> getImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -50,7 +78,7 @@ class _minhaContaState extends State<minhaConta> {
               cacheControl: "public, max-age=300",
               contentType: "image/jpeg",
               customMetadata: {
-                "user": "123",
+                "user": "${FirebaseAuth.instance.currentUser!.email}",
               },
             ),
           );
@@ -103,17 +131,33 @@ class _minhaContaState extends State<minhaConta> {
     // arquivos = prefs.getStringList('images') ?? [];
 
     // if (arquivos.isEmpty) {
-    refs = (await storage.ref('images').listAll()).items;
-    for (var ref in refs) {
-      final arquivo = await ref.getDownloadURL();
-      arquivos.add(arquivo);
+    //   String downloadProfile = await storage
+    //           .ref('images/img-${FirebaseAuth.instance.currentUser!.email}.jpeg')
+    //           .getDownloadURL();
+    //       print('certo');
+    //       profilePicUrl = downloadProfile;
+    try {
+      String downloadProfile = await storage
+          .ref('images/img-${FirebaseAuth.instance.currentUser!.email}.jpeg')
+          .getDownloadURL();
+      profilePicUrl = downloadProfile;
+      if (this.mounted) {
+        setState(() => loading = false);
+      }
+    } on FirebaseException catch (e) {
+      if (e.code == 'object-not-found') {
+        profilePicUrl = "";
+      }
     }
+
     // prefs.setStringList('images', arquivos);
     // }
-    setState(() => loading = false);
   }
 
   Widget build(BuildContext context) {
+    setState(() {
+      print(profilePicUrl);
+    });
     return Scaffold(
         body: ListView(
       padding: EdgeInsets.zero,
@@ -156,7 +200,6 @@ class _minhaContaState extends State<minhaConta> {
   Widget buildTop(context) {
     final bottom = profileHeight / 2;
     final top = coverHeight - profileHeight / 2;
-
     return Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.center,
@@ -184,10 +227,7 @@ class _minhaContaState extends State<minhaConta> {
                     backgroundImage: AssetImage("images/usericon.jpg"),
                   )
                 : CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      profilePicUrl,
-                    ),
-                  ),
+                    backgroundImage: CachedNetworkImageProvider(profilePicUrl)),
             Positioned(
               bottom: 0,
               right: -25,

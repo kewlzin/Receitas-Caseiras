@@ -43,6 +43,15 @@ class _ReceitasFavoritasState extends State<ReceitasFavoritas> {
                           child: InkWell(
                         splashColor: Colors.grey,
                         // onTap: () => print(tabela[receita].nome + "foi pressionado"),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ReceitasDetalhesPage(
+                                  receita: favoritas.lista[index]),
+                            ),
+                          );
+                        },
                         child: Container(
                             margin: const EdgeInsets.only(
                               bottom: 30,

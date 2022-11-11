@@ -39,8 +39,9 @@ class MyApp extends StatelessWidget {
       title: 'Receitas Caseiras',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          appBarTheme:
-              AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
+          appBarTheme: AppBarTheme(
+              iconTheme: IconThemeData(
+                  color: Color.fromARGB(255, 255, 255, 255), size: 30)),
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
               elevation: 0,
               selectedItemColor: Color.fromARGB(255, 70, 70, 70),

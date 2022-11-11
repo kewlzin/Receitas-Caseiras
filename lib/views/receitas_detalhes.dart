@@ -31,65 +31,64 @@ class _ReceitasDetalhesPageState extends State<ReceitasDetalhesPage> {
     favoritas = context.watch<FavoritasRepository>();
     //
     bool favoritada = false;
-    if (favoritas.box.containsKey(widget.receita.nome)) {
-      //if (favoritas.lista.contains(widget.receita)) {
+    if (favoritas.lista.contains(widget.receita)) {
       favoritada = true;
     } else {
       favoritada = false;
     }
     ;
     return Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-            onPressed: () async {
-              (selecionadas.contains(widget.receita))
-                  ? selecionadas.remove(widget.receita)
-                  : selecionadas.add(widget.receita);
-              if (!favoritada) {
-                favoritas.saveAll(selecionadas);
-                favoritada = true;
-              } else {
-                favoritada = false;
-                favoritas.remove(widget.receita);
-              }
+      extendBodyBehindAppBar: true,
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: () async {
+            (selecionadas.contains(widget.receita))
+                ? selecionadas.remove(widget.receita)
+                : selecionadas.add(widget.receita);
+            if (!favoritada) {
+              favoritas.saveAll(selecionadas);
+              favoritada = true;
+            } else {
+              favoritada = false;
+              favoritas.remove(widget.receita);
+            }
 
-              limparSelecionadas();
-              print(selecionadas.length);
-              print(favoritas.lista.length);
-            },
-            label: favoritada ? Text('Desfavoritar') : Text('Favoritar'),
-            icon: const Icon(Icons.favorite),
-            backgroundColor: favoritada ? Colors.grey : Colors.red),
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(45))),
-          title: Text(
-            widget.receita.nome,
-            style: TextStyle(color: Colors.black),
+            limparSelecionadas();
+            // print(selecionadas.length);
+            // print(favoritas.lista.length);
+            // print(favoritas.lista.toString());
+            // print(favoritas.box.keys);
+          },
+          label: favoritada ? Text('Desfavoritar') : Text('Favoritar'),
+          icon: const Icon(Icons.favorite),
+          backgroundColor: favoritada ? Colors.grey : Colors.red),
+      backgroundColor: Color.fromARGB(255, 247, 247, 247),
+      body: Stack(
+        children: [
+          Container(
+            child: buildCoverImage(),
           ),
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
-        body: ListView(
-          children: <Widget>[buildCoverImage(), buildContent()],
-        ));
+          ListView(
+            padding: EdgeInsets.only(top: coverHeight + 120),
+            children: [buildContent()],
+          )
+        ],
+
+        //children: <Widget>[buildCoverImage(), buildContent()],
+      ),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color.fromARGB(4, 24, 24, 24),
+        elevation: 0,
+      ),
+    );
   }
 
   Widget buildCoverImage() => SizedBox(
-        height: coverHeight,
+        height: coverHeight + 100,
         child: Stack(
           fit: StackFit.expand,
           children: [
             Image.asset(widget.receita.imagem, fit: BoxFit.cover),
-            ClipRRect(
-                child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-              child: Container(
-                color: Colors.orange.withOpacity(0.2),
-                alignment: Alignment.center,
-              ),
-            ))
           ],
         ),
       );
@@ -103,30 +102,37 @@ class _ReceitasDetalhesPageState extends State<ReceitasDetalhesPage> {
                 color: Color.fromARGB(255, 34, 34, 34))),
         const SizedBox(height: 15),
         new Row(children: <Widget>[
+          Icon(Icons.watch_later_rounded),
           Flexible(
-              child: GestureDetector(
-                  child: Text(
-                    'Tempo de Preparo:\n ' + widget.receita.tempo + ' minutos',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onTap: () {
-                    print(favoritas.lista.length);
-                  }))
+            child: Text(
+              widget.receita.tempo + ' minutos',
+              style: TextStyle(fontSize: 20),
+            ),
+          )
         ]),
         const SizedBox(
-          height: 25,
+          height: 15,
         ),
         new Row(
           children: <Widget>[
-            new Flexible(
-                child: new Text.rich(TextSpan(children: [
-              TextSpan(
-                  text: 'Modo de Preparo:\n', style: TextStyle(fontSize: 20)),
-              TextSpan(
-                  text: widget.receita.preparo, style: TextStyle(fontSize: 17)),
-            ]))),
+            Icon(Icons.local_dining),
+            Flexible(
+                child:
+                    Text('Modo de preparo:', style: TextStyle(fontSize: 20))),
           ],
         ),
+        const SizedBox(
+          height: 15,
+        ),
+        new Row(children: <Widget>[
+          Flexible(
+              child: new Text.rich(TextSpan(children: [
+            TextSpan(
+                text: widget.receita.preparo,
+                style: TextStyle(
+                    fontSize: 17, color: Color.fromARGB(255, 133, 133, 133))),
+          ]))),
+        ]),
         const SizedBox(
           height: 10,
         ),
