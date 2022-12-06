@@ -15,19 +15,9 @@ class inicio extends StatefulWidget {
 }
 
 class _inicioState extends State<inicio> {
-  // mostrarDetalhes(Receita receita) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (_) => ReceitasDetalhesPage(receita: receita),
-  //     ),
-  //   );
-
-//  late FavoritasRepository favoritas;
   @override
   Widget build(BuildContext context) {
     final tabela = ReceitaRepository.tabela;
-    //   favoritas = context.watch<FavoritasRepository>();
 
     return Container(
         color: Colors.transparent,
