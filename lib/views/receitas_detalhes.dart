@@ -1,7 +1,11 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:projeto_flutter_mobile/main.dart';
 import 'package:projeto_flutter_mobile/repositories/favoritas_repository.dart';
 import 'package:projeto_flutter_mobile/repositories/receitas_repository.dart';
+import 'package:projeto_flutter_mobile/views/loginPage.dart';
 import 'package:projeto_flutter_mobile/views/receitasFavoritas.dart';
+import 'package:projeto_flutter_mobile/widgets/aut_check.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_flutter_mobile/models/receitas.dart';
@@ -41,18 +45,33 @@ class _ReceitasDetalhesPageState extends State<ReceitasDetalhesPage> {
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            (selecionadas.contains(widget.receita))
-                ? selecionadas.remove(widget.receita)
-                : selecionadas.add(widget.receita);
-            if (!favoritada) {
-              favoritas.saveAll(selecionadas);
-              favoritada = true;
+            if (FirebaseAuth.instance.currentUser?.email == null) {
+              print('No user found');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AuthCheck(),
+                ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: const Text(
+                      'Ops! Você precisa estar conectado para favoritar!'),
+                  duration: const Duration(seconds: 2)));
             } else {
-              favoritada = false;
-              favoritas.remove(widget.receita);
+              (selecionadas.contains(widget.receita))
+                  ? selecionadas.remove(widget.receita)
+                  : selecionadas.add(widget.receita);
+              if (!favoritada) {
+                favoritas.saveAll(selecionadas);
+                favoritada = true;
+              } else {
+                favoritada = false;
+                favoritas.remove(widget.receita);
+              }
+              limparSelecionadas();
             }
+            ;
 
-            limparSelecionadas();
             // print(selecionadas.length);
             // print(favoritas.lista.length);
             // print(favoritas.lista.toString());

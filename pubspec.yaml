@@ -44,6 +44,8 @@ dependencies:
   hive_flutter: ^1.1.0
   path_provider: ^2.0.11
   cached_network_image: ^3.2.2
+  toast: ^0.3.0
+  camera: ^0.8.1+5
   
 
 dev_dependencies:
