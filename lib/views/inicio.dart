@@ -35,6 +35,7 @@ class _inicioState extends State<inicio> {
 
   Widget build(BuildContext context) {
     final tabela = ReceitaRepository.tabela;
+    //   favoritas = context.watch<FavoritasRepository>();
 
     return Scaffold(
         appBar: AppBar(
