@@ -1,25 +1,25 @@
 class Receita {
-  String nome;
-  String tempo;
-  String curtidas;
-  String imagem;
-  String preparo;
+  final String nome;
+  final String tempo;
+  final double curtidas;
+  final String imagem;
+//  final String? preparo;
 
   Receita({
     required this.nome, //name
     required this.tempo, //totalTime
     required this.curtidas, //rating
     required this.imagem, //images/hostedLargeUrl
-    required this.preparo, //preparationSteps
+    //  required this.preparo, //preparationSteps
   });
 
   factory Receita.fromJson(dynamic json) {
     return Receita(
       nome: json['name'] as String,
       tempo: json['totalTime'] as String,
-      curtidas: json['rating'] as String,
+      curtidas: json['rating'] as double,
       imagem: json['images'][0]['hostedLargeUrl'] as String,
-      preparo: json['preparationSteps'] as String,
+      //   preparo: json['preparationSteps'] as String,
     );
   }
 
@@ -31,6 +31,6 @@ class Receita {
 
   @override
   String toString() {
-    return 'Receita {nome: $nome, tempo: $tempo, curtidas: $curtidas, imagem: $imagem, preparo: $preparo}';
+    return 'Receita {nome: $nome, tempo: $tempo, curtidas: $curtidas, imagem: $imagem, preparo:}'; // $preparo
   }
 }

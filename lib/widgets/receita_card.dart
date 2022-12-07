@@ -7,14 +7,14 @@ class ReceitaCard extends StatelessWidget {
   final String curtidas;
   final String tempo;
   final String imagem;
-  final String modopreparo;
+//  final String modopreparo;
 
   ReceitaCard({
     required this.nome,
     required this.curtidas,
     required this.tempo,
     required this.imagem,
-    required this.modopreparo,
+    //  required this.modopreparo,
   });
   @override
   Widget build(BuildContext context) {
@@ -54,6 +54,7 @@ class ReceitaCard extends StatelessWidget {
                 nome,
                 style: TextStyle(
                   fontSize: 19,
+                  color: Colors.white,
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
@@ -81,7 +82,10 @@ class ReceitaCard extends StatelessWidget {
                         size: 18,
                       ),
                       SizedBox(width: 7),
-                      Text(curtidas),
+                      Text(
+                        curtidas,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ],
                   ),
                 ),
@@ -100,7 +104,10 @@ class ReceitaCard extends StatelessWidget {
                         size: 18,
                       ),
                       SizedBox(width: 7),
-                      Text(tempo),
+                      Text(
+                        tempo,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ],
                   ),
                 )

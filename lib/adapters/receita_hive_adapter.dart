@@ -7,19 +7,20 @@ class ReceitaHiveAdapter extends TypeAdapter<Receita> {
   @override
   Receita read(BinaryReader reader) {
     return Receita(
-        nome: reader.readString(),
-        tempo: reader.readString(),
-        curtidas: reader.readString(),
-        imagem: reader.readString(),
-        preparo: reader.readString());
+      nome: reader.readString(),
+      tempo: reader.readString(),
+      curtidas: reader.readDouble(),
+      imagem: reader.readString(),
+//preparo: reader.readString());
+    );
   }
 
   @override
   void write(BinaryWriter writer, Receita obj) {
     writer.writeString(obj.nome);
     writer.writeString(obj.tempo);
-    writer.writeString(obj.curtidas);
+    writer.writeDouble(obj.curtidas);
     writer.writeString(obj.imagem);
-    writer.writeString(obj.preparo);
+    // writer.writeString(obj.preparo);
   }
 }

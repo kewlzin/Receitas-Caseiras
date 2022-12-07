@@ -104,7 +104,8 @@ class _ReceitasFavoritasState extends State<ReceitasFavoritas> {
                                           Icon(Icons.favorite,
                                               color: Colors.white),
                                           Text(
-                                            favoritas.lista[index].curtidas,
+                                            favoritas.lista[index].curtidas
+                                                .toString(),
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 15,

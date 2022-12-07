@@ -31,20 +31,30 @@ class _inicioState extends State<inicio> {
     setState(() {
       _isLoading = false;
     });
+    print(_receitas);
   }
 
   Widget build(BuildContext context) {
-    final tabela = ReceitaRepository.tabela;
+    // final tabela = ReceitaRepository.tabela;
     //   favoritas = context.watch<FavoritasRepository>();
 
     return Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.restaurant_menu),
+              Icon(
+                Icons.restaurant_menu,
+                color: Color.fromARGB(255, 236, 181, 30),
+              ),
               SizedBox(width: 10),
-              Text('Food Recipe')
+              Text(
+                'Receitas Caseiras',
+                style: TextStyle(color: Color.fromARGB(255, 236, 181, 30)),
+              )
             ],
           ),
         ),
@@ -58,7 +68,7 @@ class _inicioState extends State<inicio> {
                     tempo: _receitas[index].tempo,
                     curtidas: _receitas[index].curtidas.toString(),
                     imagem: _receitas[index].imagem,
-                    modopreparo: _receitas[index].preparo,
+                    //  modopreparo: _receitas[index].preparo,
                   );
                 },
               ));

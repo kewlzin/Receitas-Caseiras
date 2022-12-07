@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projeto_flutter_mobile/main.dart';
 import 'package:projeto_flutter_mobile/repositories/favoritas_repository.dart';
-import 'package:projeto_flutter_mobile/repositories/receitas_repository.dart';
+//import 'package:projeto_flutter_mobile/repositories/receitas_repository.dart';
 import 'package:projeto_flutter_mobile/views/loginPage.dart';
 import 'package:projeto_flutter_mobile/views/receitasFavoritas.dart';
 import 'package:projeto_flutter_mobile/widgets/aut_check.dart';
@@ -147,7 +147,7 @@ class _ReceitasDetalhesPageState extends State<ReceitasDetalhesPage> {
           Flexible(
               child: new Text.rich(TextSpan(children: [
             TextSpan(
-                text: widget.receita.preparo,
+                // text: widget.receita.preparo,
                 style: TextStyle(
                     fontSize: 17, color: Color.fromARGB(255, 133, 133, 133))),
           ]))),
