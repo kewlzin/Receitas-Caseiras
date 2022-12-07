@@ -83,8 +83,10 @@ class _DocumentosPageState extends State<DocumentosPage> {
 
   _arquivoWidget() {
     return Container(
-      width: size!.width - 50,
-      height: size!.height - (size!.height / 3),
+      // width: size!.width - 50,
+      // height: size!.height - (size!.height / 3),
+      width: size!.width,
+      height: size!.height,
       child: imagem == null
           ? _cameraPreviewWidget()
           : Image.file(
