@@ -14,12 +14,21 @@ class ReceitaApi {
     });
 
     Map data = jsonDecode(response.body);
+    //print(data);
     List _temp = [];
 
+    //   data["feed"][0]["content"]["preparationSteps"];
+
     for (var i in data['feed']) {
+      //  _temp.add(i['content']);
       _temp.add(i['content']['details']);
     }
 
     return Receita.recipesFromSnapshot(_temp);
   }
 }
+
+//LEIA:
+/*
+The original source url of this recipe with the recipe's preparation steps. - Please note that the Yummly API does not provide the prep steps. As part of attribution to source...
+A API que eu tava usando não providencia a receita, fiquei muito tempo tentando fazer funcionar sem saber */

@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_flutter_mobile/models/receitas.dart';
 import 'package:projeto_flutter_mobile/repositories/favoritas_repository.dart';
-import 'package:projeto_flutter_mobile/repositories/receitas_repository.dart';
 import 'package:projeto_flutter_mobile/views/receitas_detalhes.dart';
 import '../models/receitas.api.dart';
 import '../models/receitas.dart';
@@ -63,13 +62,23 @@ class _inicioState extends State<inicio> {
             : ListView.builder(
                 itemCount: _receitas.length,
                 itemBuilder: (context, index) {
-                  return ReceitaCard(
-                    nome: _receitas[index].nome,
-                    tempo: _receitas[index].tempo,
-                    curtidas: _receitas[index].curtidas.toString(),
-                    imagem: _receitas[index].imagem,
-                    //  modopreparo: _receitas[index].preparo,
-                  );
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                ReceitasDetalhesPage(receita: _receitas[index]),
+                          ),
+                        );
+                      },
+                      child: ReceitaCard(
+                        nome: _receitas[index].nome,
+                        tempo: _receitas[index].tempo,
+                        curtidas: _receitas[index].curtidas.toString(),
+                        imagem: _receitas[index].imagem,
+                        //preparo: _receitas[index].preparo,
+                      ));
                 },
               ));
   }

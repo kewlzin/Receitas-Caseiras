@@ -62,7 +62,7 @@ class _ReceitasFavoritasState extends State<ReceitasFavoritas> {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image:
-                                    AssetImage(favoritas.lista[index].imagem),
+                                    NetworkImage(favoritas.lista[index].imagem),
                                 fit: BoxFit.cover,
                                 colorFilter: new ColorFilter.mode(
                                     Colors.black.withOpacity(0.6),

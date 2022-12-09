@@ -11,7 +11,7 @@ class ReceitaHiveAdapter extends TypeAdapter<Receita> {
       tempo: reader.readString(),
       curtidas: reader.readDouble(),
       imagem: reader.readString(),
-//preparo: reader.readString());
+      // preparo: reader.readString(),
     );
   }
 
@@ -21,6 +21,6 @@ class ReceitaHiveAdapter extends TypeAdapter<Receita> {
     writer.writeString(obj.tempo);
     writer.writeDouble(obj.curtidas);
     writer.writeString(obj.imagem);
-    // writer.writeString(obj.preparo);
+    //writer.writeString(obj.preparo);
   }
 }

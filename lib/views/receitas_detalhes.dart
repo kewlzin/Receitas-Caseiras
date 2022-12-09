@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:projeto_flutter_mobile/main.dart';
 import 'package:projeto_flutter_mobile/repositories/favoritas_repository.dart';
-//import 'package:projeto_flutter_mobile/repositories/receitas_repository.dart';
 import 'package:projeto_flutter_mobile/views/loginPage.dart';
 import 'package:projeto_flutter_mobile/views/receitasFavoritas.dart';
 import 'package:projeto_flutter_mobile/widgets/aut_check.dart';
@@ -107,7 +106,9 @@ class _ReceitasDetalhesPageState extends State<ReceitasDetalhesPage> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(widget.receita.imagem, fit: BoxFit.cover),
+            //Image.asset(widget.receita.imagem, fit: BoxFit.cover),
+            //NetworkImage(imagem)
+            Image.network(widget.receita.imagem, fit: BoxFit.cover),
           ],
         ),
       );

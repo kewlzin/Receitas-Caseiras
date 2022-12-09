@@ -3,14 +3,14 @@ class Receita {
   final String tempo;
   final double curtidas;
   final String imagem;
-//  final String? preparo;
+  //final String? preparo;
 
   Receita({
     required this.nome, //name
     required this.tempo, //totalTime
     required this.curtidas, //rating
     required this.imagem, //images/hostedLargeUrl
-    //  required this.preparo, //preparationSteps
+    // required this.preparo, //preparationSteps
   });
 
   factory Receita.fromJson(dynamic json) {
@@ -19,7 +19,7 @@ class Receita {
       tempo: json['totalTime'] as String,
       curtidas: json['rating'] as double,
       imagem: json['images'][0]['hostedLargeUrl'] as String,
-      //   preparo: json['preparationSteps'] as String,
+      //  preparo: json['preparationSteps'][0] as String,
     );
   }
 
