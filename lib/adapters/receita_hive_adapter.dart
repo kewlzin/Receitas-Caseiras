@@ -11,6 +11,7 @@ class ReceitaHiveAdapter extends TypeAdapter<Receita> {
       tempo: reader.readString(),
       curtidas: reader.readDouble(),
       imagem: reader.readString(),
+      ingredientes: reader.readList(),
       // preparo: reader.readString(),
     );
   }

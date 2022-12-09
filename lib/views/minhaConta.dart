@@ -31,30 +31,8 @@ class _minhaContaState extends State<minhaConta> {
   bool uploading = false;
   double total = 0;
   bool control = true;
-//TODO Fazer botão de login/cadastro
   @override
   final FirebaseStorage storage = FirebaseStorage.instance;
-
-  // void checkexist() async {
-  //   if (control) {
-  //     try {
-  //       String downloadProfile = await storage
-  //           .ref('images/img-${FirebaseAuth.instance.currentUser!.email}.jpeg')
-  //           .getDownloadURL();
-  //       print('certo');
-  //       profilePicUrl = downloadProfile;
-  //     } on FirebaseException catch (e) {
-  //       if (e.code == 'object-not-found') {
-  //         print('nãocerto');
-  //         profilePicUrl = "";
-  //       } else {
-  //         print("${e.code}");
-  //         profilePicUrl = "";
-  //       }
-  //     }
-  //     control = true;
-  //   }
-  // }
 
   void initState() {
     super.initState();
@@ -103,12 +81,6 @@ class _minhaContaState extends State<minhaConta> {
         } else if (snapshot.state == TaskState.success) {
           final photoRef = snapshot.ref;
 
-          // final newMetadata = SettableMetadata(
-          //   cacheControl: "public, max-age=300",
-          //   contentType: "image/jpeg",
-          // );
-          // await photoRef.updateMetadata(newMetadata);
-
           arquivos.add(await photoRef.getDownloadURL());
           refs.add(photoRef);
           photoRef.getDownloadURL().then(
@@ -119,8 +91,6 @@ class _minhaContaState extends State<minhaConta> {
               });
             },
           );
-          // final SharedPreferences prefs = await _prefs;
-          // prefs.setStringList('images', arquivos);
 
           setState(() => uploading = false);
         }
@@ -298,13 +268,14 @@ class _minhaContaState extends State<minhaConta> {
                                     ElevatedButton(
                                       child: const Icon(Icons.camera_alt,
                                           color: Colors.black),
-                                      onPressed: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DocumentosPage(),
-                                            fullscreenDialog: true),
-                                      ),
+                                      onPressed: _showCameraPage,
+                                      // onPressed: () => Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //       builder: (context) =>
+                                      //           DocumentosPage(),
+                                      //       fullscreenDialog: true),
+                                      // ),
                                       style: ElevatedButton.styleFrom(
                                         shape: CircleBorder(),
                                         padding: EdgeInsets.all(20),
@@ -380,4 +351,15 @@ class _minhaContaState extends State<minhaConta> {
           fit: BoxFit.cover,
         ),
       );
+
+  void _showCameraPage() async {
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => DocumentosPage(),
+    ));
+    await _loadImage();
+  }
+
+  Future<void> _loadImage() async {
+    setState(() {});
+  }
 }

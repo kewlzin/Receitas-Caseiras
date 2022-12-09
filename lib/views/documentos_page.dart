@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:hive/hive.dart';
@@ -16,6 +17,7 @@ class _DocumentosPageState extends State<DocumentosPage> {
   CameraController? controller;
   XFile? imagem;
   Size? size;
+  bool iscamerafront = false;
   @override
   void initState() {
     super.initState();
@@ -56,6 +58,28 @@ class _DocumentosPageState extends State<DocumentosPage> {
     }
   }
 
+  Future<UploadTask> upload(String path) async {
+    File file = File(path);
+    try {
+      String ref =
+          'images/img-${FirebaseAuth.instance.currentUser!.email}.jpeg';
+      // String ref = 'images/img-${DateTime.now().toString()}.jpeg';
+      final storageRef = FirebaseStorage.instance.ref();
+      return storageRef.child(ref).putFile(
+            file,
+            SettableMetadata(
+              cacheControl: "public, max-age=300",
+              contentType: "image/jpeg",
+              customMetadata: {
+                "user": "${FirebaseAuth.instance.currentUser!.email}",
+              },
+            ),
+          );
+    } on FirebaseException catch (e) {
+      throw Exception('Erro no upload: ${e.code}');
+    }
+  }
+
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Scaffold(
@@ -73,7 +97,8 @@ class _DocumentosPageState extends State<DocumentosPage> {
       ),
       floatingActionButton: (imagem != null)
           ? FloatingActionButton.extended(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(context, true),
+              // onPressed: () {},
               label: Text('Finalizar'),
             )
           : null,
@@ -106,9 +131,40 @@ class _DocumentosPageState extends State<DocumentosPage> {
         children: [
           CameraPreview(controller!),
           _botaoCapturaWidget(),
+          _botaoVirarCamera()
         ],
       );
     }
+  }
+
+  _botaoVirarCamera() {
+    return Padding(
+      padding: EdgeInsets.only(left: 235, bottom: 35),
+      child: CircleAvatar(
+        radius: 20,
+        backgroundColor: Colors.black.withOpacity(0.5),
+        child: IconButton(
+          icon: Icon(
+            Icons.flip_camera_ios,
+            color: Colors.white,
+            size: 20,
+          ),
+          onPressed: virarCamera,
+        ),
+      ),
+    );
+  }
+
+  virarCamera() async {
+    // int cameraPos = iscamerafront ? 0 : 1;
+    if (iscamerafront) {
+      _previewCamera(cameras.first);
+      iscamerafront = false;
+    } else {
+      _previewCamera(cameras.last);
+      iscamerafront = true;
+    }
+    setState(() {});
   }
 
   _botaoCapturaWidget() {
@@ -119,7 +175,7 @@ class _DocumentosPageState extends State<DocumentosPage> {
         backgroundColor: Colors.black.withOpacity(0.5),
         child: IconButton(
           icon: Icon(
-            Icons.camera_alt,
+            Icons.panorama_fish_eye,
             color: Colors.white,
             size: 30,
           ),
@@ -140,5 +196,7 @@ class _DocumentosPageState extends State<DocumentosPage> {
         print(e.description);
       }
     }
+
+    UploadTask task = await upload(imagem!.path);
   }
 }

@@ -20,8 +20,9 @@ class ReceitaApi {
     //   data["feed"][0]["content"]["preparationSteps"];
 
     for (var i in data['feed']) {
-      //  _temp.add(i['content']);
-      _temp.add(i['content']['details']);
+      _temp.add(i['content']);
+      //  _temp.add(i['content']['details']);
+      //  _temp.add(i['content']['ingredientLines']);
     }
 
     return Receita.recipesFromSnapshot(_temp);
